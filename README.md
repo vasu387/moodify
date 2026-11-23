@@ -132,3 +132,4 @@ The included `frontend/vercel.json` automatically ensures all client-side routes
 
 ## 📄 License
 MIT License © 2026 Moodify.
+

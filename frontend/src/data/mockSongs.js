@@ -418,6 +418,199 @@ export const mockSongs = [
     coverUrl: "https://images.unsplash.com/photo-1468698240895-96e2c10c7e4e?w=300&h=300&fit=crop",
     audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-14.mp3",
     relatedIds: ["11", "16", "17", "28"]
+  },
+  {
+    id: "31",
+    title: "Katchi Sera",
+    artist: "Sai Abhyankkar",
+    album: "Katchi Sera Single",
+    language: "Tamil",
+    moods: ["Romantic", "Happy", "Soft & swoony"],
+    genre: "Indie",
+    energy: "High",
+    durationSec: 194,
+    coverUrl: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300&h=300&fit=crop",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3",
+    relatedIds: ["32", "33", "1", "9"]
+  },
+  {
+    id: "32",
+    title: "Aasa Kooda",
+    artist: "Sai Abhyankkar",
+    album: "Aasa Kooda Single",
+    language: "Tamil",
+    moods: ["Romantic", "Falling in love", "Peaceful"],
+    genre: "Melody",
+    energy: "Medium",
+    durationSec: 218,
+    coverUrl: "https://images.unsplash.com/photo-1518609878373-06d740f60d8b?w=300&h=300&fit=crop",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-16.mp3",
+    relatedIds: ["31", "33", "2", "4"]
+  },
+  {
+    id: "33",
+    title: "Sithira Puthiri",
+    artist: "Sai Abhyankkar",
+    album: "Sithira Puthiri",
+    language: "Tamil",
+    moods: ["Energetic", "Lit up", "Main character"],
+    genre: "Pop",
+    energy: "High",
+    durationSec: 205,
+    coverUrl: "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=300&h=300&fit=crop",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+    relatedIds: ["31", "32", "9", "28"]
+  },
+  {
+    id: "34",
+    title: "Vaadi Pulla Vaadi",
+    artist: "Hiphop Tamizha Adhi",
+    album: "Meesaya Murukku",
+    language: "Tamil",
+    moods: ["Energetic", "Happy", "Unstoppable"],
+    genre: "Indie",
+    energy: "High",
+    durationSec: 226,
+    coverUrl: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&h=300&fit=crop",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+    relatedIds: ["35", "36", "9", "28"]
+  },
+  {
+    id: "35",
+    title: "Club le Mabbu le",
+    artist: "Hiphop Tamizha Adhi",
+    album: "Hip Hop Tamizhan",
+    language: "Tamil",
+    moods: ["Hype", "Late night", "Energetic"],
+    genre: "Pop",
+    energy: "High",
+    durationSec: 214,
+    coverUrl: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=300&h=300&fit=crop",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+    relatedIds: ["34", "36", "11", "30"]
+  },
+  {
+    id: "36",
+    title: "Meesaya Murukku",
+    artist: "Hiphop Tamizha Adhi",
+    album: "Meesaya Murukku",
+    language: "Tamil",
+    moods: ["Main character", "Unstoppable", "Lit up"],
+    genre: "Rock",
+    energy: "High",
+    durationSec: 198,
+    coverUrl: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300&h=300&fit=crop",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+    relatedIds: ["34", "35", "9", "28"]
+  },
+  {
+    id: "37",
+    title: "Vaseegara",
+    artist: "Harris Jayaraj",
+    album: "Minnale",
+    language: "Tamil",
+    moods: ["Romantic", "Peaceful", "Soft & swoony"],
+    genre: "Melody",
+    energy: "Low",
+    durationSec: 300,
+    coverUrl: "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=300&h=300&fit=crop",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+    relatedIds: ["38", "39", "2", "3"]
+  },
+  {
+    id: "38",
+    title: "Annal Mel Pani Thuli",
+    artist: "Harris Jayaraj",
+    album: "Vaaranam Aayiram",
+    language: "Tamil",
+    moods: ["Nostalgic", "Romantic", "Soft & swoony"],
+    genre: "Melody",
+    energy: "Low",
+    durationSec: 322,
+    coverUrl: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&h=300&fit=crop",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3",
+    relatedIds: ["37", "39", "1", "10"]
+  },
+  {
+    id: "39",
+    title: "Mun Andhi",
+    artist: "Harris Jayaraj",
+    album: "7aum Arivu",
+    language: "Tamil",
+    moods: ["Romantic", "Nostalgic", "Peaceful"],
+    genre: "Melody",
+    energy: "Medium",
+    durationSec: 374,
+    coverUrl: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop",
+    audioUrl: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3",
+    relatedIds: ["37", "38", "4", "26"]
+  }
+];
+
+export const TOP_CREATORS = [
+  {
+    id: "anirudh",
+    name: "Anirudh Ravichander",
+    filterKey: "Anirudh",
+    tag: "Tamil · Rockstar",
+    image: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=300&h=300&fit=crop",
+    color: "#F5A623"
+  },
+  {
+    id: "sai-abhyankkar",
+    name: "Sai Abhyankkar",
+    filterKey: "Sai Abhyankkar",
+    tag: "Tamil · Viral Indie",
+    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300&h=300&fit=crop",
+    color: "#A855F7"
+  },
+  {
+    id: "hiphop-tamizha",
+    name: "Hiphop Tamizha Adhi",
+    filterKey: "Hiphop Tamizha",
+    tag: "Tamil · Hip-Hop / Folk",
+    image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=300&h=300&fit=crop",
+    color: "#EF4444"
+  },
+  {
+    id: "harris-jayaraj",
+    name: "Harris Jayaraj",
+    filterKey: "Harris Jayaraj",
+    tag: "Tamil · Melody Legend",
+    image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=300&h=300&fit=crop",
+    color: "#3B82F6"
+  },
+  {
+    id: "ar-rahman",
+    name: "A.R. Rahman",
+    filterKey: "A.R. Rahman",
+    tag: "Tamil / Hindi · Maestro",
+    image: "https://images.unsplash.com/photo-1468164016595-6108e4c60c8b?w=300&h=300&fit=crop",
+    color: "#D97706"
+  },
+  {
+    id: "yuvan-shankar-raja",
+    name: "Yuvan Shankar Raja",
+    filterKey: "Yuvan Shankar Raja",
+    tag: "Tamil · Soul & BGM",
+    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=300&h=300&fit=crop",
+    color: "#8B5CF6"
+  },
+  {
+    id: "sid-sriram",
+    name: "Sid Sriram",
+    filterKey: "Sid Sriram",
+    tag: "Tamil / Telugu · Soulful",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop",
+    color: "#10B981"
+  },
+  {
+    id: "the-weeknd",
+    name: "The Weeknd",
+    filterKey: "The Weeknd",
+    tag: "English · Synthwave",
+    image: "https://images.unsplash.com/photo-1626171155590-e3e2c1dcb04b?w=300&h=300&fit=crop",
+    color: "#EC4899"
   }
 ];
 

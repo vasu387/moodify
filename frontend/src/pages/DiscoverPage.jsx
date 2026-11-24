@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Search,
-  TrendingUp,
   Flame,
   ArrowRight,
   Sparkles,
@@ -10,9 +9,11 @@ import {
   Clock,
   Play,
   Heart,
+  Check,
+  RotateCcw,
+  Users,
 } from 'lucide-react';
-import { mockSongs } from '../data/mockSongs';
-import { SongCard } from '../components/ui/SongCard';
+import { mockSongs, TOP_CREATORS } from '../data/mockSongs';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { usePlayer } from '../context/PlayerContext';
@@ -93,7 +94,10 @@ export function DiscoverPage() {
   const navigate = useNavigate();
   const [heroSearch, setHeroSearch] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('All');
-  const { playSong, recentlyPlayed } = usePlayer();
+  const [selectedCreator, setSelectedCreator] = useState(null);
+
+  const { playSong, recentlyPlayed, currentSong, isPlaying, toggleFavourite, isFavourite } =
+    usePlayer();
 
   const handleHeroSearch = (e) => {
     e.preventDefault();
@@ -102,15 +106,40 @@ export function DiscoverPage() {
     }
   };
 
-  const trendingTracks = mockSongs.slice(0, 8);
+  const handleCreatorClick = (creator) => {
+    if (selectedCreator?.id === creator.id) {
+      setSelectedCreator(null);
+    } else {
+      setSelectedCreator(creator);
+    }
+  };
 
-  const filteredCatalog =
-    selectedLanguage === 'All'
-      ? mockSongs
-      : mockSongs.filter((s) => s.language === selectedLanguage);
+  // Filtered Trending Songs based on creator & language
+  const trendingSongs = useMemo(() => {
+    let list = [...mockSongs];
+
+    if (selectedCreator) {
+      list = list.filter((s) =>
+        s.artist.toLowerCase().includes(selectedCreator.filterKey.toLowerCase())
+      );
+    }
+
+    if (selectedLanguage !== 'All') {
+      list = list.filter((s) => s.language === selectedLanguage);
+    }
+
+    return list;
+  }, [selectedCreator, selectedLanguage]);
+
+  const formatSec = (sec) => {
+    if (!sec) return '0:00';
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return `${m}:${s < 10 ? '0' : ''}${s}`;
+  };
 
   return (
-    <div className="pb-36 md:pb-24 px-3.5 md:px-6 max-w-7xl mx-auto space-y-10 md:space-y-16">
+    <div className="pb-36 md:pb-28 px-3.5 md:px-6 max-w-7xl mx-auto space-y-10 md:space-y-16">
       {/* Hero Section */}
       <section className="relative px-2 pt-1 pb-8 md:pt-4 md:pb-24 overflow-hidden text-center">
         {/* Ambient background glow */}
@@ -183,7 +212,7 @@ export function DiscoverPage() {
             <h2 className="font-serif text-xl md:text-2xl font-bold text-white">Explore Catalog</h2>
           </div>
           <span className="text-[11px] md:text-xs text-gray-400">
-            {filteredCatalog.length} tracks
+            {trendingSongs.length} tracks displayed
           </span>
         </div>
 
@@ -207,54 +236,234 @@ export function DiscoverPage() {
         </div>
       </section>
 
-      {/* Trending Tracks Grid */}
+      {/* SECTION 1: TOP CREATORS (Replacing Trending Tracks) */}
       <section className="space-y-3 md:space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <TrendingUp className="w-4 h-4 text-amber-400" />
-            <h2 className="font-serif text-xl md:text-2xl font-bold text-white">Trending Tracks</h2>
+            <Users className="w-4 h-4 text-amber-400" />
+            <h2 className="font-serif text-xl md:text-2xl font-bold text-white">Top Creators</h2>
+            <span className="px-2 py-0.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-400 text-[10px] md:text-xs font-semibold uppercase tracking-wider">
+              Trending Now
+            </span>
           </div>
-          <span className="text-[11px] md:text-xs text-amber-400/90 font-medium">Updated Hourly</span>
-        </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-          {trendingTracks.map((song, i) => (
-            <div
-              key={song.id}
-              className="card p-2.5 md:p-3 flex flex-col justify-between hover:border-amber-500/40 transition-all duration-200 group"
+          {selectedCreator && (
+            <button
+              onClick={() => setSelectedCreator(null)}
+              className="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1 transition-colors"
             >
-              <div className="relative aspect-square w-full rounded-xl overflow-hidden mb-2.5">
-                <img
-                  src={song.coverUrl}
-                  alt={song.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <button
-                  onClick={() => playSong(song, trendingTracks)}
-                  className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity"
-                >
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-amber-500 flex items-center justify-center text-black shadow-xl">
-                    <Play className="w-4 h-4 md:w-5 md:h-5 fill-black ml-0.5" />
-                  </div>
-                </button>
-                <div className="absolute top-1.5 left-1.5 md:top-2 md:left-2 w-5 h-5 md:w-6 md:h-6 rounded-md bg-black/75 backdrop-blur text-white text-[10px] md:text-xs font-bold flex items-center justify-center">
-                  #{i + 1}
-                </div>
-              </div>
-
-              <div>
-                <h3 className="font-medium text-white text-xs md:text-sm truncate group-hover:text-amber-400 transition-colors">
-                  {song.title}
-                </h3>
-                <p className="text-[11px] md:text-xs text-gray-400 truncate mt-0.5">{song.artist}</p>
-                <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/5">
-                  <Badge variant="language">{song.language}</Badge>
-                  <span className="text-[10px] md:text-[11px] text-gray-500">{song.genre}</span>
-                </div>
-              </div>
-            </div>
-          ))}
+              <RotateCcw className="w-3 h-3" />
+              <span>Show All Creators</span>
+            </button>
+          )}
         </div>
+
+        {/* 8 Creator Cards Responsive Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          {TOP_CREATORS.map((creator) => {
+            const isSelected = selectedCreator?.id === creator.id;
+            const trackCount = mockSongs.filter((s) =>
+              s.artist.toLowerCase().includes(creator.filterKey.toLowerCase())
+            ).length;
+
+            return (
+              <div
+                key={creator.id}
+                onClick={() => handleCreatorClick(creator)}
+                className={`card p-3 rounded-2xl cursor-pointer transition-all duration-200 group flex items-center gap-3 relative overflow-hidden ${
+                  isSelected
+                    ? 'border-[#F5A623] bg-amber-500/10 shadow-lg shadow-amber-500/20 ring-1 ring-amber-400/50 scale-[1.02]'
+                    : 'hover:border-white/20 hover:bg-white/5'
+                }`}
+              >
+                {/* Stylized Creator Artwork */}
+                <div className="relative w-12 h-12 md:w-14 md:h-14 rounded-xl overflow-hidden flex-shrink-0 shadow-md ring-1 ring-white/10">
+                  <img
+                    src={creator.image}
+                    alt={creator.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  {isSelected && (
+                    <div className="absolute inset-0 bg-amber-500/40 backdrop-blur-[1px] flex items-center justify-center">
+                      <Check className="w-5 h-5 text-black stroke-[3]" />
+                    </div>
+                  )}
+                </div>
+
+                {/* Creator Details */}
+                <div className="min-w-0 flex-1">
+                  <h4
+                    className={`font-serif text-xs md:text-sm font-bold truncate leading-tight ${
+                      isSelected ? 'text-amber-400' : 'text-white group-hover:text-amber-300'
+                    }`}
+                  >
+                    {creator.name}
+                  </h4>
+                  <p className="text-[10px] md:text-[11px] text-gray-400 truncate mt-0.5">
+                    {creator.tag}
+                  </p>
+                  <span className="text-[9px] md:text-[10px] text-amber-400/90 font-mono mt-1 inline-block">
+                    {trackCount} {trackCount === 1 ? 'Track' : 'Tracks'}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* SECTION 2: TRENDING SONGS (Replacing All Songs with Ranked Rows) */}
+      <section className="space-y-3 md:space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-1 border-b border-white/5">
+          <div className="flex items-center gap-2 flex-wrap">
+            <Flame className="w-4 h-4 text-amber-400" />
+            <h2 className="font-serif text-xl md:text-2xl font-bold text-white">
+              Trending Songs
+              {selectedCreator && (
+                <span className="text-amber-400 font-sans text-base font-normal ml-2">
+                  • {selectedCreator.name}
+                </span>
+              )}
+            </h2>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <span className="text-[11px] md:text-xs text-gray-400">
+              {trendingSongs.length} {trendingSongs.length === 1 ? 'song' : 'songs'} in chart
+            </span>
+            {selectedCreator && (
+              <button
+                onClick={() => setSelectedCreator(null)}
+                className="text-xs px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-gray-300 border border-white/10 transition-colors"
+              >
+                Clear filter
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Ranked Song Rows with #1, #2, #3 badges */}
+        {trendingSongs.length === 0 ? (
+          <div className="card p-10 text-center">
+            <p className="text-gray-400 text-sm">No songs match this specific creator & language filter.</p>
+            <Button
+              variant="secondary"
+              size="sm"
+              className="mt-3"
+              onClick={() => {
+                setSelectedCreator(null);
+                setSelectedLanguage('All');
+              }}
+            >
+              Reset Filters
+            </Button>
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {trendingSongs.map((song, i) => {
+              const fav = isFavourite(song.id);
+              const active = currentSong?.id === song.id;
+
+              return (
+                <div
+                  key={song.id}
+                  onClick={() => playSong(song, trendingSongs)}
+                  className={`group card p-3 rounded-xl flex items-center justify-between gap-3 cursor-pointer transition-all duration-200 hover:border-amber-500/30 ${
+                    active
+                      ? 'bg-amber-500/10 border-amber-500/30'
+                      : 'hover:bg-white/5'
+                  }`}
+                >
+                  <div className="flex items-center gap-3 md:gap-4 min-w-0 flex-1">
+                    {/* Rank Badge */}
+                    <span
+                      className={`text-sm md:text-base font-mono font-bold w-6 text-center flex-shrink-0 ${
+                        i < 3 ? 'text-amber-400' : 'text-gray-500'
+                      }`}
+                    >
+                      #{i + 1}
+                    </span>
+
+                    {/* Album Art with Play Hover */}
+                    <div className="relative w-12 h-12 rounded-xl overflow-hidden flex-shrink-0 shadow-md">
+                      <img
+                        src={song.coverUrl}
+                        alt={song.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <div
+                        className={`absolute inset-0 bg-black/50 flex items-center justify-center transition-opacity ${
+                          active && isPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                        }`}
+                      >
+                        <Play className="w-5 h-5 text-white fill-white ml-0.5" />
+                      </div>
+                      {active && isPlaying && (
+                        <div className="absolute bottom-1 left-1/2 -translate-x-1/2 flex gap-0.5">
+                          {[0, 1, 2].map((idx) => (
+                            <div
+                              key={idx}
+                              className="w-0.5 bg-amber-400 rounded-full animate-bounce"
+                              style={{ height: '7px', animationDelay: `${idx * 0.1}s` }}
+                            />
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Metadata */}
+                    <div className="min-w-0 flex-1">
+                      <p
+                        className={`text-xs md:text-sm font-semibold truncate ${
+                          active ? 'text-amber-400' : 'text-white group-hover:text-amber-300'
+                        }`}
+                      >
+                        {song.title}
+                      </p>
+                      <p className="text-[11px] md:text-xs text-gray-400 truncate mt-0.5">
+                        {song.artist} • <span className="text-gray-500">{song.album}</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Badges, Duration & Actions */}
+                  <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
+                    <Badge variant="language" className="hidden sm:inline-flex">
+                      {song.language}
+                    </Badge>
+                    <span className="text-xs font-mono text-gray-400">
+                      {formatSec(song.durationSec)}
+                    </span>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleFavourite(song);
+                      }}
+                      className={`p-2 rounded-lg transition-colors ${
+                        fav ? 'text-red-400' : 'text-gray-400 hover:text-red-400'
+                      }`}
+                      title="Save favourite"
+                    >
+                      <Heart className={`w-4 h-4 ${fav ? 'fill-current' : ''}`} />
+                    </button>
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        playSong(song, trendingSongs);
+                      }}
+                      className="p-2 rounded-lg bg-white/5 hover:bg-amber-500 text-gray-300 hover:text-black transition-colors"
+                      title="Play track"
+                    >
+                      <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </section>
 
       {/* Curated Mood Playlists */}
@@ -304,29 +513,38 @@ export function DiscoverPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-3">
             {recentlyPlayed.slice(0, 6).map((song) => (
-              <SongCard key={song.id} song={song} songs={recentlyPlayed} />
+              <div
+                key={song.id}
+                onClick={() => playSong(song, recentlyPlayed)}
+                className="card p-2.5 rounded-xl flex items-center justify-between gap-3 hover:border-amber-500/30 cursor-pointer transition-colors"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <img
+                    src={song.coverUrl}
+                    alt=""
+                    className="w-10 h-10 rounded-lg object-cover flex-shrink-0"
+                  />
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold text-white truncate">{song.title}</p>
+                    <p className="text-[11px] text-gray-400 truncate">{song.artist}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFavourite(song);
+                  }}
+                  className={`p-1.5 rounded-lg ${
+                    isFavourite(song.id) ? 'text-red-400' : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  <Heart className={`w-3.5 h-3.5 ${isFavourite(song.id) ? 'fill-current' : ''}`} />
+                </button>
+              </div>
             ))}
           </div>
         </section>
       )}
-
-      {/* Filtered Track Catalog */}
-      <section className="space-y-3 md:space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="font-serif text-xl md:text-2xl font-bold text-white">
-            {selectedLanguage === 'All' ? 'All Songs' : `${selectedLanguage} Songs`}
-          </h2>
-          <span className="text-[11px] md:text-xs text-gray-400">
-            {filteredCatalog.length} songs
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 md:gap-3">
-          {filteredCatalog.map((song) => (
-            <SongCard key={song.id} song={song} songs={filteredCatalog} />
-          ))}
-        </div>
-      </section>
     </div>
   );
 }
